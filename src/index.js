@@ -1,9 +1,12 @@
 import express from "express";
 import dotenv from "dotenv";
+import dbConnect from "./config/dbConnect.js";
 
 dotenv.config();
 
+
 const app= express();
+dbConnect();
 
 //Built-in Middleware 
 app.use(express.json());
