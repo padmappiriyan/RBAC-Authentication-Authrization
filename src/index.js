@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import dbConnect from "./config/dbConnect.js";
+import authRoutes from "./routes/authRoutes.js"
 
 dotenv.config();
 
@@ -10,6 +11,7 @@ dbConnect();
 
 //Built-in Middleware 
 app.use(express.json());
+app.use("/api/auth",authRoutes);
 
 //Start the Server
 const PORT = process.env.PORT || 7002;
