@@ -30,17 +30,8 @@ export  const register = async(req,res)=>{
 
 export const login = async(req,res)=>{
     try{
-
-    }
-    catch(error){
-        console.log(error);
-         res.status(500).json({
-            success:false,
-            message:"Internal Server Error"
-        })
-    }
     const {username,password}= req.body;
-    const user = User.findOne({username});
+    const user = await User.findOne({username});
     if(!user){
          return res.status(401).json({
             success:false,
@@ -57,7 +48,10 @@ export const login = async(req,res)=>{
     const token = jwt.sign({id:user._id,role:user.role},process.env.JWT_SECURE,{
         expiresIn:'1hr'
     });
-
+     res.cookie("access_token", token, {
+        httpOnly: true,
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      });
 
     res.status(200).json({
         success:true,
@@ -65,5 +59,14 @@ export const login = async(req,res)=>{
         token
     })
 
+    }
+    catch(error){
+        console.log(error);
+         res.status(500).json({
+            success:false,
+            message:"Internal Server Error"
+        })
+    }
+    
     
 }
